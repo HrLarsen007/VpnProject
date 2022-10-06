@@ -21,13 +21,19 @@ services:
     image: httpd
     ports:
       - "80:80"
+    hostname: web.local
+    volumes:
+      - "./data/apache/www/html:/var/www/html"
     networks:
-      - app
+       mynet:    
+          aliases:
+            - web.local
     depends_on:
       - mariadb
     restart: always
   
   mariadb:
+    container_name: "mariadb-service"
     image: mariadb
     ports:
       - "3306:3306"
@@ -43,6 +49,7 @@ services:
     restart: always
 
   portainer:
+    container_name: "portainer"
     image: portainer/portainer-ce:latest
     command: -H unix:///var/run/docker.sock
     ports:
