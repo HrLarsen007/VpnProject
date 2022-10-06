@@ -1,14 +1,14 @@
 version: "3.3"
 
 services:
+  
   nginx:
-    container_name: 'nginx-service'
+    container_name: "nginx-service"
     build:
       context: .
       dockerfile: docker/nginx.Dockerfile
     ports:
-      - 80:80
-      - 443:443
+      - "443:443"
     volumes:
       - ./config:/config
       - /etc/letsencrypt:/etc/letsencrypt:ro
@@ -16,6 +16,12 @@ services:
     networks:
       - app
     restart: always
+  
+  web:
+    container_name: "apache-service"
+    image: httpd
+    ports:
+      - "80:80"
 
 networks:
   app:
