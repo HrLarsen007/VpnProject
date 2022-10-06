@@ -1,27 +1,59 @@
-version: "3.3"
+version: "3.9"
 
 services:
   
-  nginx:
-    container_name: "nginx-service"
-    build:
-      context: .
-      dockerfile: docker/nginx.Dockerfile
+  proxy:
+    container_name: "nginx-proxy"
+    image: jwilder/nginx-proxy
     ports:
       - "443:443"
     volumes:
-      - ./config:/config
+      - ./config/nginx:/config
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /tmp/acme_challenge:/tmp/acme_challenge
     networks:
       - app
     restart: always
   
-  web:
+  webserver:
     container_name: "apache-service"
     image: httpd
     ports:
       - "80:80"
+    networks:
+      - app
+    restart: always
+  
+  mariadb:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=radius
+      - MYSQL_PASSWORD=radpass
+      - MYSQL_USER=radius
+      - MYSQL_DATABASE=radius
+    networks:
+      - app
+    depends_on:
+      - mariadb
+    restart: always
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    #environment:
+      #- VIRTUAL_HOST=portainer.yourdomain.com
+      #- VIRTUAL_PORT=9000
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/portainer
 
 networks:
   app:
