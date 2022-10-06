@@ -22,6 +22,8 @@ services:
       - "80:80"
     networks:
       - app
+    depends_on:
+      - mariadb
     restart: always
   
   mariadb:
@@ -37,23 +39,20 @@ services:
       - MYSQL_DATABASE=radius
     networks:
       - app
-    depends_on:
-      - mariadb
     restart: always
 
   portainer:
     image: portainer/portainer-ce:latest
     command: -H unix:///var/run/docker.sock
-    restart: always
-    #environment:
-      #- VIRTUAL_HOST=portainer.yourdomain.com
-      #- VIRTUAL_PORT=9000
     ports:
       - "8000:8000"
       - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./data/portainer
+    networks:
+      - app
+    restart: always
 
 networks:
   app:
