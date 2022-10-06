@@ -6,7 +6,7 @@
 ## https://github.com/2stacks/docker-freeradius/blob/master/docker-compose.yml
 ## https://www.cloudbooklet.com/install-wordpress-with-docker-compose-nginx-apache-with-ssl/
 ## https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
-
+## https://www.bogotobogo.com/DevOps/Docker/Docker-Compose-Nginx-Reverse-Proxy-Multiple-Containers.php
 
 sudo yum update -y && yum upgrade -y && yum check-update
 
@@ -22,4 +22,10 @@ sudo yum update -y && yum upgrade -y && yum check-update
 
 systemctl enable --now docker
 systemctl enable --now fail2ban
+
+mkdir nginx_https_docker && cd nginx_https_docker
+mkdir config
+mkdir docker
+touch config/nginx.conf docker/nginx.Dockerfile
+touch docker-compose.yaml docker-compose-le.yaml
 
