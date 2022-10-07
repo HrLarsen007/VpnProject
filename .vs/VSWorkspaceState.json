@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\nginx_https_docker",
+    "\\nginx_https_docker\\config",
+    "\\nginx_https_docker\\config\\nginx",
+    "\\TEMP"
   ],
-  "SelectedNode": "\\C:\\Users\\HrLar\\Source\\Repos\\VpnProject",
+  "SelectedNode": "\\nginx_https_docker\\config\\nginx\\nginx.conf",
   "PreviewInSolutionExplorer": false
 }

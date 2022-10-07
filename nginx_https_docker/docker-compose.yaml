@@ -17,23 +17,23 @@ services:
     restart: always
   
   webserver:
-    container_name: "apache-service"
+    container_name: "apache-webserver"
     image: httpd
     ports:
       - "80:80"
-    hostname: web.local
+    hostname: web
     volumes:
       - "./data/apache/www/html:/var/www/html"
     networks:
        app:    
           aliases:
-            - web.local
+            - web
     depends_on:
       - mariadb
     restart: always
   
   mariadb:
-    container_name: "mariadb-service"
+    container_name: "mariadb-db"
     image: mariadb
     ports:
       - "3306:3306"
