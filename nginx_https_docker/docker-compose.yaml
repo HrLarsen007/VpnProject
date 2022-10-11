@@ -4,17 +4,22 @@ services:
   
   proxy:
     container_name: "nginx-proxy"
-    #image: jwilder/nginx-proxy
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
       - "80:80"
       - "443:443"
       - "81:81"
+
     volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - ./config/nginx:/config
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      - /tmp/acme_challenge:/tmp/acme_challenge
+      #- "/var/run/docker.sock:/tmp/docker.sock:ro"
+      #- ./config/nginx:/config
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+      #- /tmp/acme_challenge:/tmp/
+
+    environment:
+      DB_SQLITE_FILE: "/data/npm.sqlite"
+
     networks:
       - app
     restart: always
