@@ -22,7 +22,7 @@ services:
     container_name: "apache-webserver"
     image: httpd
     ports:
-      - "80:80"
+      - "8080:8080"
     hostname: web
     volumes:
       - "./data/apache/www/html:/var/www/html"
