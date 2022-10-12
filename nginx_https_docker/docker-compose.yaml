@@ -31,7 +31,6 @@ services:
       - "8080:80"
     hostname: web
     volumes:
-      - "./data/apache/www/html:/var/www/html"
       - "./website:/usr/local/apache2/htdocs"
     networks:
        app:    
@@ -107,4 +106,8 @@ networks:
 volumes:
   portainer_data:
   data:
+  ./data:
+  /data:
+  ./configs:
+
 
