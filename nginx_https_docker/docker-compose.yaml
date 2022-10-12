@@ -106,10 +106,6 @@ networks:
 volumes:
   portainer_data:
   data:
-  ./data:
-  /data:
-  .configs:
   configs:
-  ./configs:
 
 
