@@ -75,9 +75,9 @@ services:
     ports:
       - "1812:1812/udp"
       - "1813:1813/udp"
-    volumes:
-      - "./configs/radius/users:/etc/raddb/users"
-      - "./configs/radius/clients.conf:/etc/raddb/clients.conf"
+    #volumes:
+      #- "./configs/radius/users:/etc/raddb/users"
+      #- "./configs/radius/clients.conf:/etc/raddb/clients.conf"
     environment:
       - DB_NAME=radius
       - DB_HOST=mariadb
@@ -87,15 +87,11 @@ services:
       - RADIUS_KEY=testing123
       - RAD_CLIENTS=172.25.0.0/16
       - RAD_DEBUG=yes
-
     depends_on:
       - mariadb
-
     links:
       - mariadb
-
     restart: always
-
     networks:
       - app
 
