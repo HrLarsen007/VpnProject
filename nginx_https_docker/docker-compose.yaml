@@ -98,33 +98,7 @@ services:
     networks:
       - app
 
-  radius-web:
-    build: .
-    container_name: radius-web
-    restart: unless-stopped
-    depends_on:
-      - freeradius
-      - mariadb
-    ports:
-      - '8082:80'
-    environment:
-      - MYSQL_HOST=mariadb
-      - MYSQL_PORT=3306
-      - MYSQL_DATABASE=radius
-      - MYSQL_USER=radius
-      - MYSQL_PASSWORD=radpass
-      # Optional Settings:
-      - DEFAULT_CLIENT_SECRET=testing123
-      - DEFAULT_FREERADIUS_SERVER=freeradius
-      - MAIL_SMTPADDR=127.0.0.1
-      - MAIL_PORT=25
-      - MAIL_FROM=root@daloradius.xdsl.by
-      - MAIL_AUTH=
-
-    volumes:
-      - ./data/daloradius:/data
-    networks:
-      - app
+  
 
 networks:
   app:
