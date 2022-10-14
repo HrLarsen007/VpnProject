@@ -72,13 +72,14 @@ services:
     restart: always
 
   freeradius:
+    container_name: "freeradius"
     image: "freeradius/freeradius-server:latest"
     #image: "2stacks/freeradius"
     ports:
       - "1812:1812/udp"
       - "1813:1813/udp"
     volumes:
-       - "./configs/radius/raddb/:/etc/raddb/"
+       - "./configs/radius/freeradius/:/etc/freeradius/"
        - "./data:/data"
       #- "./configs/radius/users:/etc/raddb/users"
       #- "./configs/radius/clients.conf:/etc/raddb/clients.conf"
