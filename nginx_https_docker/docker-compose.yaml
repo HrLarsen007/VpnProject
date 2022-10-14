@@ -84,11 +84,11 @@ services:
       #- "./configs/radius/users:/etc/raddb/users"
       #- "./configs/radius/clients.conf:/etc/raddb/clients.conf"
     environment:
-      - DB_NAME=radius
+      #- DB_NAME=radius
       - DB_HOST=mariadb
-      - DB_USER=radius
-      - DB_PASS=radpass
-      - DB_PORT=3306
+      #- DB_USER=radius
+      #- DB_PASS=radpass
+      #- DB_PORT=3306
       #- RADIUS_KEY=testing123
       #- RAD_CLIENTS=172.25.0.0/16
       - RAD_DEBUG=yes
