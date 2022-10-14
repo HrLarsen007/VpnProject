@@ -77,7 +77,7 @@ services:
       - "1812:1812/udp"
       - "1813:1813/udp"
     volumes:
-       - "./configs/raduys/raddb/:/etc/raddb/"
+       - "./configs/radius/raddb/:/etc/raddb/"
       #- "./configs/radius/users:/etc/raddb/users"
       #- "./configs/radius/clients.conf:/etc/raddb/clients.conf"
     environment:
