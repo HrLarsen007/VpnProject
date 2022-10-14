@@ -22,23 +22,23 @@ services:
 
     networks:
       - app
-    restart: always
+    restart: unless-stopped
   
   webserver:
     container_name: "apache-webserver"
     image: httpd
     ports:
       - "8080:80"
-    hostname: web
+    hostname: website
     volumes:
       - "./website:/usr/local/apache2/htdocs"
     networks:
        app:    
           aliases:
-            - web
+            - website
     depends_on:
       - mariadb
-    restart: always
+    restart: unless-stopped
   
   mariadb:
     container_name: "mariadb-db"
@@ -55,7 +55,7 @@ services:
       - MYSQL_DATABASE=radius
     networks:
       - app
-    restart: always
+    restart: unless-stopped
 
   portainer:
     container_name: "portainer"
@@ -69,7 +69,7 @@ services:
       - portainer_data:/data
     networks:
       - app
-    restart: always
+    restart: unless-stopped
 
   freeradius:
     container_name: "freeradius"
@@ -80,10 +80,7 @@ services:
       - "1813:1813/udp"
     command: -X
     volumes:
-       #- "./configs/radius/freeradius/:/etc/freeradius/"
        - "./data/freeradius:/data"
-      #- "./configs/radius/users:/etc/raddb/users"
-      #- "./configs/radius/clients.conf:/etc/raddb/clients.conf"
     environment:
       - DB_NAME=radius
       - DB_HOST=mariadb
@@ -92,12 +89,40 @@ services:
       - DB_PORT=3306
       #- RADIUS_KEY=testing123
       #- RAD_CLIENTS=172.25.0.0/16
-      #- RAD_DEBUG=yes
+      - DEFAULT_CLIENT_SECRET=testing123
     depends_on:
       - mariadb
     links:
       - mariadb
-    restart: always
+    restart: unless-stopped
+    networks:
+      - app
+
+  radius-web:
+    build: .
+    container_name: radius-web
+    restart: unless-stopped
+    depends_on:
+      - freeradius
+      - mariadb
+    ports:
+      - '8082:80'
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=radius
+      - MYSQL_USER=radius
+      - MYSQL_PASSWORD=radpass
+      # Optional Settings:
+      - DEFAULT_CLIENT_SECRET=testing123
+      - DEFAULT_FREERADIUS_SERVER=freeradius
+      - MAIL_SMTPADDR=127.0.0.1
+      - MAIL_PORT=25
+      - MAIL_FROM=root@daloradius.xdsl.by
+      - MAIL_AUTH=
+
+    volumes:
+      - ./data/daloradius:/data
     networks:
       - app
 
