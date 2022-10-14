@@ -74,7 +74,6 @@ services:
   freeradius:
     container_name: "freeradius"
     image: "freeradius/freeradius-server:latest"
-    #image: "2stacks/freeradius"
     ports:
       - "1812:1812/udp"
       - "1813:1813/udp"
