@@ -2,10 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\nginx_https_docker",
-    "\\nginx_https_docker\\config",
-    "\\nginx_https_docker\\config\\nginx",
-    "\\TEMP"
+    "\\nginx_https_docker\\configs\\radius"
   ],
-  "SelectedNode": "\\nginx_https_docker\\config\\nginx\\nginx.conf",
+  "SelectedNode": "\\nginx_https_docker\\reset.sh",
   "PreviewInSolutionExplorer": false
 }
