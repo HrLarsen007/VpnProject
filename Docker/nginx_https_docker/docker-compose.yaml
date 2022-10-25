@@ -9,17 +9,13 @@ services:
       - "80:80"
       - "443:443"
       - "81:81"
-
     volumes:
       #- "/var/run/docker.sock:/tmp/docker.sock:ro"
-      #- ./config/nginx:/config
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
       #- /tmp/acme_challenge:/tmp/
-
     environment:
       DB_SQLITE_FILE: "/data/npm.sqlite"
-
     networks:
       - app
     restart: unless-stopped
@@ -86,8 +82,6 @@ services:
       - DB_USER=radius
       - DB_PASS=radpass
       - DB_PORT=3306
-      #- RADIUS_KEY=testing123
-      #- RAD_CLIENTS=172.25.0.0/16
       - DEFAULT_CLIENT_SECRET=testing123
     depends_on:
       - mariadb
@@ -97,8 +91,6 @@ services:
     networks:
       - app
 
-  
-
 networks:
   app:
     driver: bridge
@@ -106,6 +98,4 @@ networks:
 volumes:
   portainer_data:
   data:
-  configs:
-
 
