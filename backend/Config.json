@@ -1,0 +1,19 @@
+
+
+{
+    "efif": {
+        "host": "",
+        "user":"zbc-elev-vpn",
+        "pass":"wSi6lhmPPR2N7nIbPzqvsT1Z7qDXcQ6AxgoKVbNhf6oTwVjX2U1vh0w",
+        "port": 465
+    },
+    "KpDesign":{
+
+        "host": "'mail.kpdesign.dk",
+        "user": "andreas@kpdesign.dk",
+        "pass": "e5!!2pKUPiAA(@p",
+        "port": 465
+
+    }
+    
+}

@@ -1,9 +1,14 @@
+# Skal have lavet NodeJS service 
+# Mangler struktur i fil hierarkiet (volumes).
+# Free Radius er ikke testet
+# Sikre at depends_on: er opsat der hvor det skal bruges.
+
 version: "3.9"
 
 services:
   
   proxy:
-    container_name: "nginx-proxy"
+    container_name: proxy
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
       - "80:80"
@@ -11,39 +16,47 @@ services:
       - "81:81"
     volumes:
       #- "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
-      #- /tmp/acme_challenge:/tmp/
+      - ./data/nginx:/data
+      - ./data/certs/letsencrypt:/etc/letsencrypt
     environment:
       DB_SQLITE_FILE: "/data/npm.sqlite"
     networks:
       - app
     restart: unless-stopped
   
-  webserver:
-    container_name: "apache-webserver"
+  frontend:
+    container_name: frontend
     image: httpd
     ports:
       - "8080:80"
-    hostname: website
     volumes:
-      - "./website:/usr/local/apache2/htdocs"
-    networks:
-       app:    
-          aliases:
-            - website
+      - ./frontend/dist:/usr/local/apache2/htdocs
     depends_on:
-      - mariadb
+      - proxy
     restart: unless-stopped
   
-  mariadb:
-    container_name: "mariadb-db"
-    image: mariadb
+  backend:
+    container_name: backend
+    image: node:16.10.0-buster
     ports:
-      - "3306:3306"
+      - "8880:80"
     volumes:
-      - "./data/mariadb:/var/lib/mysql"
-      - "./data/mariadb/radius.sql:/docker-entrypoint-initdb.d/radius.sql"
+      - ./backend:/app
+      - /app/node_modules # Mads486m: For at undgå kopiering af node modules til container context, da det vil gøre den sløv
+    depends_on:
+      - proxy
+    restart: unless-stopped
+    working_dir: /app
+    command: npm i; node app.js
+  
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    # ports:
+    #   - "3306:3306"
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+      # - ./data/mariadb/radius.sql:/docker-entrypoint-initdb.d/radius.sql
     environment:
       - MYSQL_ROOT_PASSWORD=radius
       - MYSQL_PASSWORD=radpass
@@ -54,7 +67,7 @@ services:
     restart: unless-stopped
 
   portainer:
-    container_name: "portainer"
+    container_name: portainer
     image: portainer/portainer-ce:latest
     command: -H unix:///var/run/docker.sock
     ports:
@@ -62,13 +75,13 @@ services:
       - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
+      - ./data/portainer:/data
     networks:
       - app
     restart: unless-stopped
 
   freeradius:
-    container_name: "freeradius"
+    container_name: freeradius
     image: "freeradius/freeradius-server:latest"
     ports:
       - "1812:1812/udp"
@@ -85,8 +98,6 @@ services:
       - DEFAULT_CLIENT_SECRET=testing123
     depends_on:
       - mariadb
-    links:
-      - mariadb
     restart: unless-stopped
     networks:
       - app
@@ -94,8 +105,3 @@ services:
 networks:
   app:
     driver: bridge
-
-volumes:
-  portainer_data:
-  data:
-

@@ -1,0 +1,22 @@
+{
+    "ElevVpn": {
+        "user": "radius",
+        "database": "elevvpn",
+        "host": "localhost",
+        "port": "3306",
+        "password": "J@neL0veMonkey$2"
+    },
+    "test": {
+        "user": "root",
+        "database": "elevvpndb",
+        "host": "localhost",
+        "port": "3306",
+        "password": ""
+    },
+    "Radius": {
+        "host": "localhost",
+        "user": "radius",
+        "password": "J@neL0veMonkey$2",
+        "database": "radius"
+    }
+}
